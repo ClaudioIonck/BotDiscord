@@ -15,7 +15,7 @@ bot = commands.Bot(command_prefix="!",intents=intent)
 openai.api_key = OPENAI_API_KEY
 
 # search for a message in a channel
-async def search_messages_in_channel(channel, Limit=5):
+async def search_messages_in_channel(channel, Limit=1):
     messages_list = []
 
     async for message in channel.history(limit=Limit, oldest_first=True):
@@ -47,6 +47,7 @@ async def on_message(message):
         return
 
     async with message.channel.typing():
+        # Envie a mensagem para a função ask_gpt para obter uma resposta
         messages_list = await search_messages_in_channel(message.channel)
         response = ask_gpt(messages_list)
 
@@ -56,6 +57,5 @@ async def on_message(message):
 
 
 bot.run(DISCORD_BOT_TOKEN)
-
 
 
